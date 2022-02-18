@@ -1,0 +1,31 @@
+<meta charset="utf-8" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+
+<div id="app">
+  Hi, {{name + last}}
+
+  <a href="#!" :title="titleTxt || '文章'">超連結</a>
+  <br />
+  <img :src="imgSrc" :title="titleTxt" :alt="titleTxt" height="300" />
+</div>
+
+<script>
+  var data = {ㄣ
+  	name: "Eddy",
+  	last: " Chen",
+  	imgSrc:
+  		"https://i.picsum.photos/id/212/200/300.jpg?hmac=2PUnX8vk476_x3NwjUExdYhPxVyP1Qd17BLvvBYTONQ"
+  };
+
+  var app = new Vue({
+  	el: "#app",
+  	data: {
+  		name: data.name,
+  		last: data.last,
+  		titleTxt: data.titleTxt || "文章",
+  		imgSrc: data.imgSrc
+  	}
+  });
+
+  app.name = "Eddy";
+</script>
