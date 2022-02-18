@@ -34,9 +34,9 @@
 
 			<main class="container">
 				<div class="items">
-					<article class="item">
+					<article class="item" v-for="data in activityObjectArr">
 						<header>
-							<h1>活動名</h1>
+							<h1>{{data.title}}</h1>
 							<div class="animation-swipe star">
 								<span class="glyphicon glyphicon-star"></span>
 							</div>
@@ -44,17 +44,17 @@
 
 						<dl>
 							<dt>時間</dt>
-							<dd>時間</dd>
+							<dd>{{data.time}}</dd>
 						</dl>
 
 						<dl>
 							<dt>價錢</dt>
-							<dd>價錢</dd>
+							<dd>{{data.price}}</dd>
 						</dl>
 
 						<dl>
 							<dt>地點</dt>
-							<dd>地點</dd>
+							<dd>{{data.address}}</dd>
 						</dl>
 					</article>
 				</div>
@@ -71,9 +71,14 @@
 		<script src="https://unpkg.com/vue@3"></script>
 		<script>
 			$.getJSON("./show.min.json", function (json) {
+				console.log(json);
 				// vue 3 寫法
 				window.app = Vue.createApp({
-					data() {},
+					data() {
+						return {
+							activityObjectArr: json
+						};
+					},
 					methods: {
 						toggle_like: function (s) {
 							console.log(s);
