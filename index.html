@@ -37,7 +37,11 @@
 					<article class="item" v-for="data in activityObjectArr">
 						<header>
 							<h1>{{data.title}}</h1>
-							<div class="animation-swipe star">
+							<div
+								class="animation-swipe star"
+								:class="{favorite: favorite[data.uid]}"
+								@click="toggle_like(data.uid)"
+							>
 								<span class="glyphicon glyphicon-star"></span>
 							</div>
 						</header>
@@ -61,8 +65,8 @@
 			</main>
 
 			<footer class="container">
-				<span>目前資料總價 </span>
-				<span>目前還沒有資料。</span>
+				<span v-if="">目前資料總價 </span>
+				<span v-if="!hasData">目前還沒有資料。</span>
 			</footer>
 		</div>
 
@@ -72,16 +76,24 @@
 		<script>
 			$.getJSON("./show.min.json", function (json) {
 				console.log(json);
+
+				let hasData = false;
+				if (json && json.length) {
+					hasData = true;
+				}
 				// vue 3 寫法
 				window.app = Vue.createApp({
 					data() {
 						return {
-							activityObjectArr: json
+							activityObjectArr: json,
+							hasData: hasData,
+							favorite: {}
 						};
 					},
 					methods: {
-						toggle_like: function (s) {
-							console.log(s);
+						toggle_like: function (uid) {
+							this.favorite[uid] = !this.favorite[uid];
+							console.log(this, uid, this.favorite[uid]);
 						}
 					},
 					computed: {
