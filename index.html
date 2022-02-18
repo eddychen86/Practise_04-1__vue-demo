@@ -1,108 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link
-			rel="stylesheet"
-			href="https://unpkg.com/bootstrap@3.3.5/dist/css/bootstrap.min.css"
-		/>
-		<link
-			rel="stylesheet"
-			href="https://unpkg.com/font-awesome@4.4.0/css/font-awesome.min.css"
-		/>
-		<link rel="stylesheet" href="./style.css" />
-	</head>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap@3.3.5/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/font-awesome@4.4.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
 
-	<body>
-		<div id="app">
-			<nav class="container">
-				<h1 class="pull-left">獨立音樂活動清單</h1>
+  <body>
+    <div id="app">
+      <nav class="container">
+        <h1 class="pull-left">獨立音樂活動清單</h1>
 
-				<div class="pull-left tabs">
-					<!-- 不同的分頁 -->
-					<span class="glyphicon glyphicon-th-large"></span>
-					<span class="glyphicon glyphicon-star"></span>
-				</div>
+        <div class="pull-left tabs">
+          <!-- 不同的分頁 -->
+          <span class="glyphicon glyphicon-th-large"></span>
+          <span class="glyphicon glyphicon-star"></span>
+        </div>
 
-				<div class="pull-right">
-					<!-- 不同的過濾器 -->
-					<span class="glyphicon glyphicon-time"></span>
-					<span class="glyphicon glyphicon-tag"></span>
-					<input type="text" placeholder="過濾器" />
-				</div>
-			</nav>
+        <div class="pull-right">
+          <!-- 不同的過濾器 -->
+          <span class="glyphicon glyphicon-time"></span>
+          <span class="glyphicon glyphicon-tag"></span>
+          <input type="text" placeholder="過濾器" />
+        </div>
+      </nav>
 
-			<main class="container">
-				<div class="items">
-					<article class="item" v-for="data in activityObjectArr">
-						<header>
-							<h1>{{data.title}}</h1>
-							<div
-								class="animation-swipe star"
-								:class="{favorite: favorite[data.uid]}"
-								@click="toggle_like(data.uid)"
-							>
-								<span class="glyphicon glyphicon-star"></span>
-							</div>
-						</header>
+      <main class="container">
+        <div class="items">
+          <article class="item" v-for="data in activityObjectArr">
+            <header>
+              <h1>{{data.title}}</h1>
+              <div
+                class="animation-swipe star"
+                :class="{favorite: favorite[data.uid]}"
+                @click="toggle_like(data.uid)"
+              >
+                <!--
+                  :class 內中的 {} 的值，
+                  其實等於在下方 data return 中的 favorite 的 {} 的值
+                -->
+                <span class="glyphicon glyphicon-star"></span>
+              </div>
+            </header>
 
-						<dl>
-							<dt>時間</dt>
-							<dd>{{data.time}}</dd>
-						</dl>
+            <dl>
+              <dt>時間</dt>
+              <dd>{{data.time}}</dd>
+            </dl>
 
-						<dl>
-							<dt>價錢</dt>
-							<dd>{{data.price}}</dd>
-						</dl>
+            <dl>
+              <dt>價錢</dt>
+              <dd>{{data.price}}</dd>
+            </dl>
 
-						<dl>
-							<dt>地點</dt>
-							<dd>{{data.address}}</dd>
-						</dl>
-					</article>
-				</div>
-			</main>
+            <dl>
+              <dt>地點</dt>
+              <dd>{{data.address}}</dd>
+            </dl>
+          </article>
+        </div>
+      </main>
 
-			<footer class="container">
-				<span>目前資料總價 </span>
-				<span v-if="!hasData">目前還沒有資料。</span>
-			</footer>
-		</div>
+      <footer class="container">
+        <span>目前資料總價 </span>
+        <span v-if="!hasData">目前還沒有資料。</span>
+      </footer>
+    </div>
 
-		<script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
-		<script src="https://unpkg.com/bootstrap@3.3.5/dist/js/bootstrap.min.js"></script>
-		<script src="https://unpkg.com/vue@3"></script>
-		<script>
-			$.getJSON("./show.min.json", function (json) {
-				console.log(json);
+    <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/bootstrap@3.3.5/dist/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script>
+      $.getJSON("./show.min.json", function (json) {
+        console.log(json);
 
-				let hasData = false;
-				if (json && json.length) {
-					hasData = true;
-				}
-				// vue 3 寫法
-				window.app = Vue.createApp({
-					data() {
-						return {
-							activityObjectArr: json,
-							hasData: hasData,
-							favorite: {}
-						};
-					},
-					methods: {
-						toggle_like: function (uid) {
-							this.favorite[uid] = !this.favorite[uid];
-							console.log(this, uid, this.favorite[uid]);
-						}
-					},
-					computed: {
-						current_activities: function () {},
+        let hasData = false;
+        if (json && json.length) {
+          hasData = true;
+        }
+        // vue 3 寫法
+        window.app = Vue.createApp({
+          data() {
+            return {
+              activityObjectArr: json,
+              hasData: hasData,
+              favorite: {}
+            };
+          },
+          methods: {
+            toggle_like: function (uid) {
+              // [uid] 顯示出來是字串，所以會顯示 true
+              // 但這邊預設要為 false，所以要運用「!」，可讓結果相反
+              this.favorite[uid] = !this.favorite[uid];
+              console.log(this, uid, this.favorite[uid]);
+            }
+          },
+          computed: {
+            current_activities: function () {},
 
-						total: function () {}
-					}
-				}).mount("#app");
-			});
-		</script>
-	</body>
+            total: function () {}
+          }
+        }).mount("#app");
+      });
+    </script>
+  </body>
 </html>
