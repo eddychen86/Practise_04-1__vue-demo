@@ -9,9 +9,18 @@
 	<img :src="imgSrc" :title="titleTxt" :alt="titleTxt" height="300" />
 	<p>用戶名稱：評論</p>
 	<p v-for="comment in comments">{{comment}}</p>
+
+	<p>{{message}}</p>
+	<input v-model="message" />
+	<br />
+	<button @click="counterPlus">+1</button>
+	<button @click="counterReduce">-1</button>
+	<p>{{counter}}</p>
+	<br />
 </div>
 
 <script>
+	// eslint-disable no-undef, no-unused-vars
 	var data = {
 		name: "Eddy",
 		last: " Chen",
@@ -36,7 +45,19 @@
 			last: data.last,
 			titleTxt: data.titleTxt || "文章",
 			imgSrc: data.imgSrc,
-			comments: data.comments
+			comments: data.comments,
+			message: "Hello vue",
+			counter: 0
+		},
+		methods: {
+			counterPlus: function () {
+				console.log(this);
+				this.counter++;
+			},
+			counterReduce: function () {
+				console.log(this);
+				this.counter--;
+			}
 		}
 	});
 
