@@ -2,7 +2,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
 
 <div id="app">
-	Hi, {{name + last}}
+	Hi, {{fullName}} {{last + name}}
 
 	<a href="#!" :title="titleTxt || '文章'">超連結</a>
 	<br />
@@ -13,8 +13,8 @@
 	<p>{{message}}</p>
 	<input v-model="message" />
 	<br />
-	<button @click="counterPlus">+1</button>
-	<button @click="counterReduce">-1</button>
+	<button @click="counterPlus(3)">+1</button>
+	<button @click="counterReduce($event,3)">-1</button>
 	<p>{{counter}}</p>
 	<br />
 </div>
@@ -50,13 +50,19 @@
 			counter: 0
 		},
 		methods: {
-			counterPlus: function () {
+			counterPlus: function (adder) {
 				console.log(this);
-				this.counter++;
+				this.counter = this.counter + adder;
 			},
-			counterReduce: function () {
-				console.log(this);
-				this.counter--;
+			counterReduce: function (eventData) {
+				console.log(eventData);
+				// console.log(eventData.target);
+				// this.counter--;
+			}
+		},
+		computed: {
+			fullName() {
+				return this.name + " " + this.last;
 			}
 		}
 	});
